@@ -1,0 +1,4 @@
+1、 HibernateDemo1: 演示如何创建hibernate.cfg.xml 和 映射文件  xxxxx.hbm.xml 
+					还有hibernate 如何创建 sessionfactory, 如何通过 factory 生成 session,然后连接数据库
+
+2、 HibernateDemo2: 演示hibernate 最基础的 增删改查

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<!-- 相当于连接池 -->
+	<session-factory>
+		<!-- #1 基本4项,注意：必须手动创建数据库 -->
+		<property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+		<property name="hibernate.connection.url">jdbc:mysql://127.0.0.1:3306/my_database?serverTimezone=UTC&amp;useSSL=false</property>
+		<property name="hibernate.connection.username">root</property>
+		<property name="hibernate.connection.password">root</property>
+		
+		<!-- #2 方言 
+			* 通过配置文件获得： %h%/project/etc/hibernate.properties
+		-->
+		<property name="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</property>
+		 
+		<!-- #3 自动创建表，固定值 -->
+		<property name="hibernate.hbm2ddl.auto">update</property>
+		
+		<!-- #4 显示sql 语句 -->
+		<property name="hibernate.show_sql">true</property>
+		<!-- 格式化 sql 语句  -->
+		<property name="hibernate.format_sql">true</property>
+		<!-- 显示 sql 注释 -->
+		<property name="hibernate.use_sql_comments">false</property>
+		
+		<!-- #5 javaee 6.0 以后，需要我们 取消 bean 校验 -->
+		<property name="javax.persistence.validation.mode">none</property>
+		
+		
+		<!-- #6 整合c3p0 
+		   <property name="hibernate.connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>
+		-->
+		
+		<!-- #7 隔离级别      0 = TRANSACTION_NONE 
+		    			1 = TRANSACTION_READ_UNCOMMITTED 
+		    			2 = TRANSACTION_READ_COMMITTED 
+		    			4 = TRANSACTION_REPEATABLE_READ 
+		    			8 = TRANSACTION_SERIALIZABLE  
+		 	<property name="hibernate.connection.isolation">4</property>
+		-->
+		
+		<!-- #8 将session绑定本地线程中 
+			<property name="hibernate.current_session_context_class">thread</property>
+		-->
+		
+		
+		<!-- #9二级缓存配置:   默认是不使用二级缓存的，需要手动开启 -->
+		<!-- #9.1 启用 
+			<property name="hibernate.cache.use_second_level_cache">true</property>
+		-->
+		<!-- #9.2 提供商    hibernate 支持多种提供商，而且需要我们自己加 jar 包
+			<property name="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</property>
+		-->
+		
+		<!-- #9.3 配置缓存内容 -->
+		<!-- 类缓存 
+			<class-cache usage="read-write" class="cn.itcast.a_init.Customer"/>
+			<class-cache usage="read-write" class="cn.itcast.a_init.Order"/>
+		-->
+		
+		<!-- 集合缓存 
+			<collection-cache usage="read-write" collection="cn.itcast.a_init.Customer.orderSet"/>
+		-->
+		
+		<!-- 配置映射文件
+			<mapping resource="cn/itcast/a_person/Person.hbm.xml"/>
+	    -->
+	</session-factory>
+
+</hibernate-configuration>

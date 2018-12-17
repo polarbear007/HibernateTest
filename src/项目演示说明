@@ -6,3 +6,5 @@
 3、 HibernateDemo3:  演示hibernate 创建并执行 hql 查询语句，进行复杂的条件查询，分页查询，模糊查询等等
 					演示如何绑定预编译sql
 
+4、 HibernateDemo4: 演示hibernate 的session cache，理解hibernate PO对象的三种不同状态： 瞬时态、持久态、脱管态
+					理解hibernate 一级缓存的作用、理解快照机制

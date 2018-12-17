@@ -1,0 +1,16 @@
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="cn.itcast.entity.Person" table="tab_person">
+		<id name="pid">
+			<generator class="native"/>
+		</id>
+		
+		<property name="name" />
+		<!-- 虽然是一对一，但是显然Person是主表，card表是依附person 表而存在的
+			如果person 表的数据删除了，那么 card表相对应的数据也应该跟着被删除，所以这里设置了级联关系
+		 -->
+		<one-to-one name="card" class="cn.itcast.entity.Card" cascade="all"/>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,18 @@
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="cn.itcast.entity.Card" table="tab_card">
+		<id name="cid">
+			<!-- 主键生成策略使用foreign: 会自动复制关联对象的主键值 -->
+			<generator class="foreign">
+				<!-- 设置是从card 类中的哪个成员变量去获取关联对象的主键值  -->
+				<param name="property">person</param>
+			</generator>
+		</id>
+		
+		<property name="username" />
+		<property name="password" />
+		<one-to-one name="person" class="cn.itcast.entity.Person"/>
+	</class>
+</hibernate-mapping>

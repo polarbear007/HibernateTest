@@ -8,3 +8,10 @@
 
 4、 HibernateDemo4: 演示hibernate 的session cache，理解hibernate PO对象的三种不同状态： 瞬时态、持久态、脱管态
 					理解hibernate 一级缓存的作用、理解快照机制
+					
+5、 演示hibernate 的多表关联查询： 一对一， 多对一， 多对多
+	使用hibernate 我们甚至可以不懂什么内连接、左连接、右连接、子查询，只要配置好对象的映射关系
+	hibernate 就会自动帮我们生成sql语句，并将查询的结果封装到指定的对象或者集合中
+				一对一：  Person ----  Card	
+				一对多：   User  ----   Order
+				多对多：  Student ---   Course

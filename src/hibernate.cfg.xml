@@ -22,6 +22,10 @@
 		<property name="hibernate.format_sql">true</property>
 		
 		<!-- 引入映射文件 -->
-		<mapping	resource="cn/itcast/entity/User.hbm.xml"/>
+		<mapping resource="cn/itcast/entity/User.hbm.xml"/>
+		<mapping resource="cn/itcast/entity/Person.hbm.xml"/>
+		<mapping resource="cn/itcast/entity/Card.hbm.xml"/>
+		
+		
 	</session-factory>
 </hibernate-configuration>

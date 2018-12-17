@@ -116,4 +116,5 @@ public class HibernateDemo2 {
 		session.close();
 	}
 	
+	
 }

@@ -4,6 +4,15 @@ public class User implements Cloneable{
 	private Integer userId;
 	private String username;
 	private String password;
+	
+	public User() {
+		super();
+	}
+	public User(String username, String password) {
+		super();
+		this.username = username;
+		this.password = password;
+	}
 	public Integer getUserId() {
 		return userId;
 	}
@@ -63,6 +72,9 @@ public class User implements Cloneable{
 			return false;
 		return true;
 	}
-	
+	@Override
+	public String toString() {
+		return "User [userId=" + userId + ", username=" + username + ", password=" + password + "]";
+	}
 	
 }

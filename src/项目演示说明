@@ -12,6 +12,7 @@
 5、 演示hibernate 的多表关联查询： 一对一， 多对一， 多对多
 	使用hibernate 我们甚至可以不懂什么内连接、左连接、右连接、子查询，只要配置好对象的映射关系
 	hibernate 就会自动帮我们生成sql语句，并将查询的结果封装到指定的对象或者集合中
-				一对一：  Person ----  Card	
-				一对多：   User  ----   Order
-				多对多：  Student ---   Course
+	
+	HibernateDemo5 	一对一：  Person ----  Card	
+	HibernateDemo6	一对多：   Customer  ----   Order
+	HibernateDemo07	多对多：  Student ---   Course

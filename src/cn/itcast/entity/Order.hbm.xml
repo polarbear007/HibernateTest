@@ -1,0 +1,18 @@
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="cn.itcast.entity.Order" table="tab_order">
+		<id name="oid">
+			<generator class="native"/>
+		</id>
+		
+		<property name="price"/>
+		<!-- name 是指Order类的属性名称
+			class 是指关联类的全路径名
+			column 是指数据库表外键列的列名，如果跟Order类的属性名一致，可以不写
+		 -->
+		<many-to-one name="customer" class="cn.itcast.entity.Customer" column="customer_id">
+		</many-to-one>
+	</class>
+</hibernate-mapping>

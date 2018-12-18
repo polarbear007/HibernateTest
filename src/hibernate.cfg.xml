@@ -25,6 +25,8 @@
 		<mapping resource="cn/itcast/entity/User.hbm.xml"/>
 		<mapping resource="cn/itcast/entity/Person.hbm.xml"/>
 		<mapping resource="cn/itcast/entity/Card.hbm.xml"/>
+		<mapping resource="cn/itcast/entity/Customer.hbm.xml"/>
+		<mapping resource="cn/itcast/entity/Order.hbm.xml"/>
 		
 		
 	</session-factory>

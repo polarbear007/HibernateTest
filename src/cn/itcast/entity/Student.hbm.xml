@@ -1,0 +1,16 @@
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="cn.itcast.entity.Student" table="tab_student">
+		<id name="sid">
+			<generator class="native"/>
+		</id>
+		
+		<property name="name"/>
+		<set name="courseSet" table="tab_student_course" >
+			<key column="student_id"/>
+			<many-to-many class="cn.itcast.entity.Course" column="course_id"/>
+		</set>
+	</class>
+</hibernate-mapping>

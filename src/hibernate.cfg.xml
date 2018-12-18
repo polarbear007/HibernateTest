@@ -27,7 +27,8 @@
 		<mapping resource="cn/itcast/entity/Card.hbm.xml"/>
 		<mapping resource="cn/itcast/entity/Customer.hbm.xml"/>
 		<mapping resource="cn/itcast/entity/Order.hbm.xml"/>
-		
+		<mapping resource="cn/itcast/entity/Student.hbm.xml"/>
+		<mapping resource="cn/itcast/entity/Course.hbm.xml"/>
 		
 	</session-factory>
 </hibernate-configuration>

@@ -15,4 +15,6 @@
 	
 	HibernateDemo5 	一对一：  Person ----  Card	
 	HibernateDemo6	一对多：   Customer  ----   Order
-	HibernateDemo07	多对多：  Student ---   Course
+	HibernateDemo7	多对多：  Student ---   Course
+	
+6、 

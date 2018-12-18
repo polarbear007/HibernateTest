@@ -17,4 +17,76 @@
 	HibernateDemo6	一对多：   Customer  ----   Order
 	HibernateDemo7	多对多：  Student ---   Course
 	
-6、 
+6、 inverse=true  如果在配置文件中配置关联对象的时候使用了这个，那么表示当我们在程序中设置关联对象的时候，
+ 				不会产生update或者insert语句，表示放弃对关联对象的维护。 
+ 				一般我们不推荐使用，只要记住不要双向关联即可。不管是一对多还是多对多，都是不使用inverse = true,不双向关联
+
+7、 cascade配置。  设置级联关系，可以是  save/ save-update/ delete/ delete-orphan/ all
+				一般我们都是不设置级联关系的，就算设置，一般也只是设置save 或者 save-update
+				不建议使用 delete / all 之类的，很容易造成误删数据
+
+8、 两个级别的延迟加载： 1、 类级别的延迟加载： session.get() / session.load()   先只加载主键值，其他成员变量值有用到再加载
+				  		get方法默认  lazy=false;    load方法默认 lazy=true
+				  2、 关联对象的延迟加载： 先加载对象本身的值，关联对象的值在有需要的时候再去加载
+				  		关联对象，不管是集合还是对象，默认都是 lazy=true
+
+9、 关联对象的获取方式： fetch = join/ select/ subselect
+					fetch=join 表示迫切左外连接，如果设置这个，lazy属性无效，只执行一条select 语句
+					fetch=select 默认就是这个，获取关联对象的值时，使用另外的select 语句去获取，执行多条select语句（可设置lazy）
+					fetch=subselect 表示使用子查询的方式获取关联对象的值，lazy 属性无效，只执行一条select语句
+
+10、 什么时候需要使用 hql 写关联查询： 当我们查询单表的时候，我们是不需要去写关联查询的，就算查询的类有关联对象，hibernate会自动帮我们关联的
+					但是在真实的开发中，有时候查询客户的条件来自于订单表，这个时候你就必须要使用关联查询了。
+					使用 hibernate 的hql写关联查询的时候，我们应该尽量使用  
+						select distinct c from Customer c 
+						left join fetch c.orderSet
+					使用迫切内连接或者迫切左外连接，这样子得到的结果集是  List<Customer>, 刚好就是我们想要的结果
+					
+					如果使用单纯的  sql 语句来写的话：
+						select * from t_customer c 
+						left join t_order o
+						on c.cid = o.customer_id
+					得到的结果是一个多层嵌套的  Object[], Object[] 里面的每个元素还是一个 Object[]
+					Object[] 里面是一个 customer 对象 再加上   多个 order 对象
+					如果我们只需要 customer 对象的话，那么就可以直接遍历所有的  Object[0] 获取，这样子就很麻烦
+		
+		其实，我们尽量每次都从单表获取数据，需要关联的话，再通过关联对象去获取其他表的数据就好了，  迫切左外连接也很晕人
+		比如我们要找到所有单笔订单金额超过1000的客户，那么我们可以先通过筛选单笔订单金额超过1000的订单对象
+		再通过这些订单对象获取对应的客户对象，最后再去重复就好了
+		【注意】 hibernate 最爽的就是我们可以通过操作关联对象，自动通过关联条件去获取其他表的关联数据
+
+11、 了解 session 的三种管理方式：
+		把session 与本地线程绑定，一个线程只能有一个session， commit 以后自动关闭（getCurrentSession()获取）【推荐】
+		把session 与jta 事务绑定（只知道个名字，什么是jta事务不是很了解）
+		把session 委托程序来管理（managed）， commit 以后需要自己手动关闭（openSession()获取） 【默认】
+
+12、 回过头再来看看 session 和 sessionFactory 这两个对象：
+		SessionFactory 这个对象是单例的，一个程序中你只需要创建一次，就跟servlet对象一样。
+					这个对象是用来创建 session 对象的工厂类。
+					一般来说，单例的对象在多线程环境下，是可能会有安全问题的，但是SessionFactory 不会有安全问题，
+					因为我们使用 sessionfactory 的时候，都是去调用这个对象的方法来创建 session 对象，
+					不会去访问和修改其成员变量。 如果你去看一下 SessionFactroy 这个接口的实现类，你会发现这个类的成员变量
+					很少，有也是final 修饰的成员变量。
+		
+		Session 对象是多例的，你可以通过 openSession() 或者 getCurrentSession() 去获取session对象。
+					这个对象是我们连接和操作数据库的基础，也是hibernate 实现延迟加载、session缓存、关联查询、自动封装的核心类。
+					一般来说，多例的对象如果能保证每个线程使用自己特有的session 对象，就不会有安全问题
+					但是如果一个 session 对象同时被多个线程访问，那么就很可能会出现安全问题了，因为session 缓存这些东西都是成员变量
+					而且是可以修改的，如果多个线程同时修改这些成员变量，就会出现线程安全问题
+					
+					【什么情况下session 可能会出现线程安全问题？】
+					在web项目中，为了避免频繁创建 SessionFactory，我们会在一个工具类里面创建一个静态的 SessionFactory对象
+					让所有的线程共享，因为我们一般只使用 sessionfactory 对象调用的openSession() 或者 getCurrentSession(); 
+					 
+					但是我们绝对不能创建一个静态的 session 对象让所有的线程共享，因为 session 对象的操作很可能会修改其成员变量值，
+					如果多个线程同时操作一个session 对象的话，那么这些成员变量值就会有线程安全问题；
+					
+					相同的道理，我们也绝对不可以把 session 对象放到域对象中去让多个线程共享！！！
+					【如果我们按照mvc的分层思想来写代码，也不可能会出现这种问题，因为你不可能在controller层里面去获取session对象
+						并把这个session 对象放到域对象里面给多个线程共享】
+					
+13、 理解hibernate 延迟加载的原理、 优点及其弊端。
+
+14、 理解session 关闭的过程，以及通过配置 OpenSessionInViewFilter 来延迟 session 的生命周期。
+				OpenSessionInViewFilter  只能缓解session 关闭的问题，但是无法完全解决延迟加载带来的session 关闭问题。		
+					

@@ -58,4 +58,19 @@ public class HibernateDemo6 {
 		transaction.commit();
 		session.close();
 	}
+	
+	// 演示删除
+	// 【注意】如果我们删除一方（主表），那么hibernate 会自动先把从表的相关数据的外键先都设置成 null
+	//        然后在删除主表的数据。  在mysql 本身，是不允许直接删主表的数据的。
+	@Test
+	public void testOneToMany2() {
+		Session session = factory.openSession();
+		Transaction transaction = session.beginTransaction();
+		
+		Customer customer = session.get(Customer.class, 1);
+		session.delete(customer);
+		
+		transaction.commit();
+		session.close();
+	}
 }

@@ -1,5 +1,7 @@
 package cn.itcast.demo;
 
+import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -69,6 +71,23 @@ public class HibernateDemo6 {
 		
 		Customer customer = session.get(Customer.class, 1);
 		session.delete(customer);
+		
+		transaction.commit();
+		session.close();
+	}
+	
+	// 测试一下用关联对象的值作为排序的条件
+	@Test
+	public void testOneToMany3() {
+		Session session = factory.openSession();
+		Transaction transaction = session.beginTransaction();
+		
+		List<Order> list = session.createQuery("from Order o order by o.customer.name").list();
+		if(list != null) {
+			for (Order order : list) {
+				System.out.println(order.getOid() + "---" + order.getPrice() + "---" + order.getCustomer().getName());
+			}
+		}
 		
 		transaction.commit();
 		session.close();

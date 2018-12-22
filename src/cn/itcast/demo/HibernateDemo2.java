@@ -34,7 +34,7 @@ public class HibernateDemo2 {
 		Session session = factory.openSession();
 		Transaction transaction = session.beginTransaction();
 		
-		User user = session.get(User.class, 7);
+		User user = session.get(User.class, 8);
 		
 		System.out.println(user.getUsername());
 		System.out.println(user.getPassword());
@@ -111,6 +111,38 @@ public class HibernateDemo2 {
 		User user = new User();
 		user.setUserId(7);
 		session.delete(user);
+		
+		transaction.commit();
+		session.close();
+	}
+	
+	
+	// 测试快照
+	@Test
+	public void testSnapshot() {
+		Session session = factory.openSession();
+		Transaction transaction = session.beginTransaction();
+		
+		User user = session.get(User.class, 9);
+		
+		System.out.println(user.getUsername());
+		System.out.println(user.getPassword());
+		// 一般情况下，如果我们要保存的对象跟快照里面的一样，那么hibernate 会忽略这个插入语句
+		// 所以下面的save 方法，根本不会触发 insert 语句
+		
+		// 但是如果，我们在save 之前，删除了数据库里面的数据，那么hibernate 会忽略这个语句吗？
+		// 是的！！！ 我们在插入之前特意暂停了十秒，使用其他的连接把这条数据进行删除，但是快照里面仍然有这个对象
+		// 所以 hibernate 同样会把这个 insert 语句忽略掉！！！
+		// 你说这样子是好事，还是坏事呢？  
+		// 我认为这样子是好事！！ 因为hibernate 的快照一定程度上避免了幻读！！ 试想一下，如果这个 insert 语句如果能执行的话，
+		// 那么不正好就是读取到另一个事务新增或者删除的数据。 这正是我们极力想要回避的问题之一呢！！！
+		try {
+			Thread.sleep(10000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+		session.save(user);
 		
 		transaction.commit();
 		session.close();

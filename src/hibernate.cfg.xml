@@ -20,6 +20,18 @@
 		
 		<!-- 格式化sql 语句 -->
 		<property name="hibernate.format_sql">true</property>
+		<!-- 开启二级缓存 -->
+		<property name="hibernate.cache.use_second_level_cache">true</property>
+		<!-- #9.2 设置缓存提供商    hibernate支持多种提供商，而且需要我们自己加 jar 包
+			【注意】 下面是 hibernate 4 的设置方法
+			<property name="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</property>
+			【注意】 下面是 hibernate 5 以后的设置方法
+		-->
+		<property name="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory</property>  
+		<!-- 开启查询缓存 -->
+		<property name="hibernate.cache.use_query_cache">true</property>
+		
+		
 		
 		<!-- 引入映射文件 -->
 		<mapping resource="cn/itcast/entity/User.hbm.xml"/>
@@ -30,5 +42,8 @@
 		<mapping resource="cn/itcast/entity/Student.hbm.xml"/>
 		<mapping resource="cn/itcast/entity/Course.hbm.xml"/>
 		
+		
+		<!-- 设置对哪些类进行二级缓存： 注意位置要在 mapping 标签之后 -->
+		<class-cache usage="read-write" class="cn.itcast.entity.User"/>
 	</session-factory>
 </hibernate-configuration>

@@ -52,5 +52,4 @@ public class Course {
 	public void setStudentSet(Set<Student> studentSet) {
 		this.studentSet = studentSet;
 	}
-
 }
